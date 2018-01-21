@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jzwx.mapper.UserInfoDOMapper">
+    <resultMap id="BaseResultMap" type="com.jzwx.entity.UserInfoDO">
+        <result column="ID" property="id" jdbcType="INTEGER" javaType="int"/>
+        <result column="USERNAME" property="userName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="PASSWORD" property="passWord" jdbcType="VARCHAR" javaType="String"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" javaType="String"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ID,USERNAME,PASSWORD,REMARK
+    </sql>
+
+    <insert id="insert">
+          INSERT INTO USERINFO(
+              USERNAME
+              ,PASSWORD
+              ,REMARK
+          )VALUE (
+              #{userName,jdbcType=VARCHAR}
+              ,#{passWord,jdbcType=VARCHAR}
+              ,#{remark,jdbcType=VARCHAR}
+          )
+    </insert>
+
+    <update id="update">
+          UPDATE  USERINFO
+          SET
+              USERNAME = #{userName,jdbcType=VARCHAR}
+              ,PASSWORD = #{passWord,jdbcType=VARCHAR}
+              ,REMARK = #{remark,jdbcType=VARCHAR}
+          WHERE
+            ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByPrimary">
+      DELETE FROM USERINFO
+      WHERE
+      ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getByPrimary" resultMap="BaseResultMap">
+      SELECT <include refid="Base_Column_List"/>
+      FROM USERINFO
+      WHERE
+        ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="queryUserInfo" resultMap="BaseResultMap" parameterType="com.jzwx.info.UserInfoSearch">
+        SELECT <include refid="Base_Column_List"/>
+        FROM USERINFO
+        WHERE
+        1=1
+        <if test=" id != null and id != ''">
+        AND ID = #{id,jdbcType=INTEGER}
+        </if>
+        <if test=" userName != null and userName != ''">
+        AND USERNAME = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test=" passWord !=null and passWord != ''">
+        AND PASSWORD = #{passWord,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>
